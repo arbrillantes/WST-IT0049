@@ -1,0 +1,351 @@
+/* PowerFlow Electric Custom Styles */ 
+ 
+/* Additional animations and effects */ 
+.dashboard-stat {
+    min-height: 130px;
+    padding: 1.5rem;
+    border-radius: 15px;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.account-form-container { max-width: 900px; }
+.table > :not(caption) > * > * { padding: 1rem; }
+
+.dashboard-stat strong {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.account-status-active {
+    background-color: #198754;
+    color: #fff;
+}
+
+.account-status-inactive {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.account-status-suspended {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.account-details dt,
+.account-details dd {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+@keyframes fadeInUp { 
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    } 
+
+} 
+ 
+@keyframes pulse { 
+    0% { 
+        transform: scale(1); 
+    } 
+    50% { 
+        transform: scale(1.05); 
+    } 
+    100% { 
+        transform: scale(1); 
+    } 
+} 
+ 
+@keyframes slideInLeft { 
+    from { 
+        opacity: 0; 
+        transform: translateX(-50px); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+    } 
+} 
+ 
+/* Enhanced button effects */ 
+.btn-primary:hover { 
+    animation: pulse 0.6s ease-in-out; 
+} 
+.btn-outline-light:hover, 
+.btn-outline-primary:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
+} 
+ 
+/* Card hover effects */ 
+.card:hover .feature-icon { 
+    animation: pulse 0.8s ease-in-out; 
+} 
+ 
+/* Navigation enhancements */ 
+.navbar-nav .nav-link { 
+    position: relative; 
+    overflow: hidden; 
+} 
+
+.navbar-nav .admin-login-link {
+    color: var(--primary-color) !important;
+    font-weight: 700;
+}
+
+.navbar-nav .admin-login-link::before {
+    width: 80%;
+}
+ 
+.navbar-nav .nav-link::before { 
+    content: ''; 
+    position: absolute; 
+    bottom: 0; 
+    left: 50%; 
+    width: 0; 
+    height: 2px; 
+    background: var(--secondary-color); 
+    transition: all 0.3s ease; 
+    transform: translateX(-50%); 
+} 
+.navbar-nav .nav-link:hover::before, 
+.navbar-nav .nav-link.active::before { 
+    width: 80%; 
+} 
+ 
+/* Hero section enhancements */ 
+.hero-section { 
+    position: relative; 
+    overflow: hidden; 
+} 
+ 
+.hero-section::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 
+100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path 
+d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-
+width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); 
+    opacity: 0.3; 
+} 
+ 
+.hero-section .container { 
+    position: relative; 
+    z-index: 1; 
+} 
+/* Form enhancements */ 
+.form-control:focus, 
+.form-select:focus { 
+    border-color: var(--secondary-color); 
+    box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25); 
+} 
+ 
+.form-control-lg { 
+    border-radius: 10px; 
+} 
+ 
+.form-select-lg { 
+    border-radius: 10px; 
+} 
+ 
+/* Timeline styles */ 
+.timeline { 
+    position: relative; 
+} 
+ 
+.timeline::before { 
+    content: ''; 
+    position: absolute; 
+    left: 50%; 
+    top: 0; 
+    bottom: 0; 
+    width: 2px; 
+    background: var(--primary-color); 
+transform: translateX(-50%); 
+} 
+ 
+@media (max-width: 768px) { 
+    .timeline::before { 
+        left: 15px; 
+    } 
+} 
+ 
+.timeline-item { 
+    position: relative; 
+} 
+ 
+.timeline-dot { 
+    position: relative; 
+    z-index: 2; 
+} 
+ 
+/* Loading states */ 
+.btn:disabled { 
+    opacity: 0.7; 
+    cursor: not-allowed; 
+} 
+ 
+/* Alert enhancements */ 
+.alert { 
+    border: none; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+} 
+ 
+.alert-success { 
+    background: linear-gradient(135deg, #10b981, #059669); 
+    color: white; 
+} 
+ 
+.alert-danger { 
+    background: linear-gradient(135deg, #ef4444, #dc2626); 
+    color: white; 
+} 
+ 
+/* Statistics section */ 
+.stat-item h2 { 
+    background: linear-gradient(135deg, var(--secondary-color), #f59e0b); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    background-clip: text; 
+} 
+ 
+/* Emergency section pulse effect */ 
+.emergency-item i { 
+    animation: pulse 2s infinite; 
+} 
+ 
+/* Process steps */ 
+.process-step { 
+    transition: all 0.3s ease; 
+} 
+.process-step:hover { 
+    transform: scale(1.1); 
+    background: var(--secondary-color) !important; 
+} 
+ 
+/* Service areas cards */ 
+.service-area-card { 
+    transition: all 0.3s ease; 
+    border-left: 4px solid transparent; 
+} 
+ 
+.service-area-card:hover { 
+    border-left-color: var(--secondary-color); 
+    transform: translateX(10px); 
+} 
+ 
+/* Footer enhancements */ 
+.footer { 
+    background: linear-gradient(135deg, var(--dark-color), #111827); 
+} 
+ 
+.social-icons a { 
+    transition: all 0.3s ease; 
+} 
+ 
+.social-icons a:hover { 
+    transform: translateY(-5px) rotate(5deg); 
+} 
+/* Mobile responsiveness */ 
+@media (max-width: 768px) { 
+    .display-4 { 
+        font-size: 2.5rem; 
+    } 
+     
+    .display-5 { 
+        font-size: 2rem; 
+    } 
+     
+    .hero-section { 
+        padding: 60px 0; 
+    } 
+     
+    .section-padding { 
+        padding: 60px 0; 
+    } 
+     
+    .feature-icon { 
+        width: 60px; 
+        height: 60px; 
+        font-size: 1.5rem; 
+    } 
+} 
+ 
+/* Print styles */ 
+@media print { 
+    .navbar, 
+.footer, 
+    .btn, 
+    .social-icons { 
+        display: none !important; 
+    } 
+     
+    .hero-section { 
+        background: white !important; 
+        color: black !important; 
+    } 
+     
+    .card { 
+        box-shadow: none !important; 
+        border: 1px solid #ddd !important; 
+    } 
+} 
+ 
+/* Accessibility enhancements */ 
+.btn:focus, 
+.form-control:focus, 
+.form-select:focus { 
+    outline: 2px solid var(--secondary-color); 
+    outline-offset: 2px; 
+} 
+ 
+/* High contrast mode support */ 
+@media (prefers-contrast: high) { 
+    :root { 
+        --primary-color: #000080; 
+--secondary-color: #ff6600; 
+        --accent-color: #008000; 
+    } 
+} 
+ 
+/* Reduced motion support */ 
+@media (prefers-reduced-motion: reduce) { 
+    *, 
+    *::before, 
+    *::after { 
+        animation-duration: 0.01ms !important; 
+        animation-iteration-count: 1 !important; 
+        transition-duration: 0.01ms !important; 
+    } 
+} 
+ 
+/* Dark mode support (future enhancement) */ 
+@media (prefers-color-scheme: dark) { 
+    .bg-light-custom { 
+        background-color: #1f2937 !important; 
+    } 
+     
+    .text-muted { 
+        color: #9ca3af !important; 
+    } 
+}
