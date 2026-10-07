@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+env
+vendor
+tests
+writable
+*.sql
+!app/Database/Fixtures/*.sql
+*.zip
+*.log
