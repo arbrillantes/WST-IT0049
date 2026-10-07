@@ -265,9 +265,11 @@ trait TimeTrait
      *
      * @throws Exception
      */
-    public static function createFromTimestamp(int $timestamp, $timezone = null, ?string $locale = null)
+    public static function createFromTimestamp(int|float $timestamp, $timezone = null, ?string $locale = null): static
     {
-        $time = new self(gmdate('Y-m-d H:i:s', $timestamp), 'UTC', $locale);
+        // PHP 8.4 adds this method to DateTimeImmutable. Match its signature
+        // while retaining this framework version's whole-second precision.
+        $time = new static(gmdate('Y-m-d H:i:s', (int) $timestamp), 'UTC', $locale);
 
         $timezone ??= date_default_timezone_get();
 
@@ -286,7 +288,7 @@ trait TimeTrait
         $date     = $dateTime->format('Y-m-d H:i:s');
         $timezone = $dateTime->getTimezone();
 
-        return new self($date, $timezone, $locale);
+        return new static($date, $timezone, $locale);
     }
 
     /**
@@ -683,7 +685,7 @@ trait TimeTrait
     {
         $timezone = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 
-        return self::createFromInstance($this->toDateTime()->setTimezone($timezone), $this->locale);
+        return static::createFromInstance($this->toDateTime()->setTimezone($timezone), $this->locale);
     }
 
     /**

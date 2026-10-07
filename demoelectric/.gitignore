@@ -1,0 +1,10 @@
+/.env
+/.env.*
+/vendor/
+/writable/cache/*
+/writable/logs/*
+/writable/session/*
+/writable/backups/*
+/writable/deployment/*
+!/writable/**/index.html
+!/writable/**/.htaccess

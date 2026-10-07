@@ -33,6 +33,106 @@ Seeder reads the exact supplied SQL data in `app/Database/Fixtures/customer_acco
 
 For a different folder/database, copy `env` to `.env` and set `app.baseURL` (include trailing slash) and `database.default.*`. Current URL uses the root `.htaccess` to serve assets from `public/assets`. The two ZIPs and original Downloads SQL were left unchanged.
 
+## Deploy online with the existing database
+
+The application stores live records in MySQL, not in the fixture SQL file. Admin
+login uses `users`; customer records and customer logins use `customer_accounts`.
+Export the whole `electric_company` database, including `migrations`, to preserve
+the existing accounts and password hashes. Importing only the fixture will not
+include the admin account or the current login schema.
+
+Hosting must be free and must not require a credit card. [InfinityFree](https://www.infinityfree.com/)
+explicitly offers PHP/MySQL hosting without a credit card, including a free
+subdomain. Check the actual account supports `intl`, `mbstring`, and `mysqli`
+before publishing this CodeIgniter application. The existing app requires PHP
+8.1 or higher; use a supported PHP version such as 8.3 when available.
+
+Render can host the PHP application using Docker, but [MySQL on Render](https://render.com/docs/deploy-mysql)
+needs persistent storage on a paid service. Its [free Postgres database](https://render.com/docs/free)
+is not a drop-in replacement for this MySQL application and expires after 30 days.
+A possible alternative is Render for PHP plus [Aiven's free MySQL plan](https://aiven.io/docs/products/mysql/concepts/mysql-free-tier),
+which advertises no credit card requirement. That option needs a Docker deployment
+and a verified TLS database connection configured separately; the shared-hosting
+ZIP below is not a Render deployment. InfinityFree databases cannot be used by a
+Render application because [external database access is restricted](https://forum.infinityfree.com/t/connecting-to-mysql-from-an-external-application/49339).
+
+### Prepare the upload and database export
+
+Keep MySQL running in XAMPP. Run from this project directory:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy/package.ps1 -ExportDatabase
+```
+
+The command produces `demoelectric-site.zip` and `electric-company.sql` in a new
+folder under `writable/deployment/`. The SQL is a private export with existing
+password hashes; never place it in `public/` or commit it to Git. The website ZIP
+excludes your `.env`, old sessions, logs, database backups, and test scripts.
+It contains writable directories with placeholder files (so hosting ZIP extractors
+retain them) and the production configuration template.
+If local MySQL needs a password, add `-AskDatabasePassword` to enter it privately.
+
+For a host with a fixed `htdocs/` document root (including InfinityFree), use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy/package.ps1 -SharedHosting -ExportDatabase
+```
+
+This creates `demoelectric-shared-hosting.zip`, which also includes the root
+`index.php` and `.htaccess` used by XAMPP. The rewrite rules serve assets from
+`public/` and deny direct access to private application directories.
+
+### Configure the hosting account
+
+1. Create the free hosting account and choose its free subdomain. With
+   InfinityFree, extract `demoelectric-shared-hosting.zip` locally and upload its
+   contents to the domain's `htdocs/` directory using the host's file transfer
+   instructions. Include all hidden `.htaccess` files. With a host that permits
+   setting the document root, extract `demoelectric-site.zip` into a private
+   project directory and point the site's document root at its `public/` folder.
+2. Create a NEW, EMPTY MySQL/MariaDB database and a database user in the hosting
+   control panel. Import `electric-company.sql` into that database using its
+   phpMyAdmin import feature. Keep the SQL outside the website directory.
+   Do not import over an existing populated database.
+3. Copy `env.production.example` to `.env` beside `app/` on the server. Replace
+   every `CHANGE_ME` with the actual HTTPS site URL, database host, database name,
+   database username, and database password from the hosting control panel.
+   Hosted database names may have an account prefix. The database password is
+   separate from the website admin password. Do not upload a local `.env`.
+4. Confirm PHP and the `intl`, `mbstring`, and `mysqli` extensions are enabled.
+   The bundled framework already includes its runtime libraries. Make sure the
+   hosting PHP process can write to `writable/` and its subdirectories.
+5. Enable HTTPS. The template uses HTTPS URLs and secure session cookies.
+   Do not expose `app/`, `system/`, `writable/`, or `.env` as public files.
+6. Open `https://YOUR-SITE/admin/login` and use the existing admin
+   credentials. The full database import preserves them; no reseeding is needed.
+   The classroom default `admin123` is publicly documented, so use a private
+   admin password before putting real customer information online.
+
+The online site will use the hosted database for all visitors. Later changes to
+your local XAMPP database will not automatically sync to it. Users access records
+through the website; they do not need database credentials. Admin pages remain
+restricted to signed-in admins and customers see their own profile.
+
+### Verify after publishing
+
+The bundled CodeIgniter 4.5.5 `system/I18n/TimeTrait.php` includes a targeted
+backport of the PHP 8.4 `createFromTimestamp()` signature fix, based on
+[the upstream compatibility patch](https://github.com/codeigniter4/CodeIgniter4/pull/9134/files).
+It preserves the old default timezone and whole-second precision, and supports
+late static binding. This addresses the observed declaration fatal error; it is
+not a full framework upgrade or a claim of complete PHP 8.4 compatibility.
+For an already uploaded copy, replace only `htdocs/system/I18n/TimeTrait.php`
+with the corrected local file, then refresh and check the server log if needed.
+
+Open the HTTPS URL from another device or mobile data. Check Home, About,
+Services, Contact, Register, Customer Login, and Admin Login; verify links and
+assets do not point to `localhost`. Log in as admin and verify the imported
+records. Register a temporary customer, log in on another device, and verify that
+the same record appears in the admin dashboard. Confirm logout works and a guest
+cannot open `/admin/dashboard`. Verify `/.env` and `/app/Config/Database.php` are
+not downloadable. The existing `tests/smoke.php` deliberately runs only locally.
+
 ## What was wrong / what me changed
 
 - Code used `electriccompany`; supplied SQL described `electric_company`. Me aligned config and created missing `users` table.

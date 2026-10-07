@@ -2,7 +2,7 @@
 Options -Indexes
 
 # Keep local credentials and non-public project configuration off the web.
-<FilesMatch "^(\.|env$|composer\.(json|lock)$|phpunit.*|spark$)">
+<FilesMatch "^(\.|env(?:\.|$)|composer\.(json|lock)$|phpunit.*|spark$|README\.md$|LICENSE$)">
     Require all denied
 </FilesMatch>
 
@@ -15,6 +15,9 @@ Options -Indexes
 <IfModule mod_rewrite.c>
 	Options +FollowSymlinks
 	RewriteEngine On
+
+	# Only the front controller and public assets may be served directly.
+	RewriteRule ^(?:app|system|writable|vendor|tests|deploy)(?:/|$) - [F,L]
 
 	# Assets live in public/ while this classroom project uses the root URL.
 	RewriteRule ^assets/(.*)$ public/assets/$1 [L]
