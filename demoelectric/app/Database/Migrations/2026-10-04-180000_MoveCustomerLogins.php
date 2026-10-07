@@ -12,7 +12,7 @@ class MoveCustomerLogins extends Migration
     {
         // Do not merge people based only on an unverified email address.
         $duplicates = $this->db->query("SELECT LOWER(TRIM(email)) FROM customer_accounts WHERE email IS NOT NULL AND TRIM(email) <> '' GROUP BY LOWER(TRIM(email)) HAVING COUNT(*) > 1")->getResultArray();
-        $conflicts = $this->db->query("SELECT u.id FROM users u JOIN customer_accounts c ON LOWER(TRIM(c.email)) = LOWER(TRIM(u.email)) WHERE u.user_type = 'customer'")->getResultArray();
+        $conflicts = $this->db->query("SELECT u.id FROM users u JOIN customer_accounts c ON LOWER(TRIM(c.email)) COLLATE utf8mb4_unicode_ci = LOWER(TRIM(u.email)) COLLATE utf8mb4_unicode_ci WHERE u.user_type = 'customer'")->getResultArray();
         if ($duplicates !== [] || $conflicts !== []) {
             throw new RuntimeException('Customer email conflicts require review before moving logins; no identities were merged.');
         }
